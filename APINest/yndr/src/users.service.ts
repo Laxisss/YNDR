@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import Database from './database.manager';
 
 @Injectable()
 export class UsersService {
@@ -11,6 +12,7 @@ export class UsersService {
   }
 
   registerUser(body: object): string {
-    return `Utilisateur inséré :${JSON.stringify(body)}`;
+    const db = new Database('localhost', 'root', '', 'yndr');
+    return `Utilisateur inséré :${JSON.stringify(body)} + ${db.checkInit()}`;
   }
 }

@@ -11,7 +11,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  getSingleUser(@Param() params): string {
+  getSingleUser(@Param() params: any): string {
     return this.userService.getSingleUser(params.id);
   }
 
