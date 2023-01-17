@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get, Header, Param, Body, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 
@@ -6,13 +7,17 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get()
-  getAllUsers(): string {
+  async getAllUsers(): Promise<any> {
     return this.userService.getAllUsers();
   }
 
   @Get(':id')
-  getSingleUser(@Param() params: any): string {
-    return this.userService.getSingleUser(params.id);
+  async getSingleUser(@Param() params: any): Promise<any> {
+    return await new Promise(resolve => {
+      this.userService.getSingleUser(params.id).then(data => {
+        resolve(data);
+      })
+    });
   }
 
   @Post()
