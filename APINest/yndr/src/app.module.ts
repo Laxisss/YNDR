@@ -1,11 +1,18 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { UsersController } from './users.controller';
 import { AppService } from './app.service';
-import { UsersService } from './users.service';
-import { UsersModule } from './users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Utilisateurs } from './Database/users.entity';
+
+import { Utilisateurs } from './users/users.entity';
+import { UsersController } from './users/users.controller';
+import { UsersService } from './users/users.service';
+import { UsersModule } from './users/users.module';
+
+import { Traits } from './traits/traits.entity';
+import { TraitsController } from './traits/traits.controller';
+import { TraitsServices } from './traits/traits.service';
+import { TraitsModule } from './traits/traits.module';
 
 @Module({
   imports: [
@@ -16,13 +23,14 @@ import { Utilisateurs } from './Database/users.entity';
       username: 'root',
       password: '',
       database: 'yndr',
-      entities: [Utilisateurs],
+      entities: [Utilisateurs, Traits],
       synchronize: true,
       autoLoadEntities: true,
     }),
     UsersModule,
+    TraitsModule
   ],
-  controllers: [AppController, UsersController],
-  providers: [AppService, UsersService],
+  controllers: [AppController, UsersController, TraitsController],
+  providers: [AppService, UsersService, TraitsServices],
 })
 export class AppModule {}
