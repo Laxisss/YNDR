@@ -16,6 +16,11 @@ export class TraitsController {
     return this.traitsServices.getSingleTrait(params.id);
   }
 
+  /**
+   * 
+   * @param body { Nom : "Nom"}
+   * @returns 
+   */
   @Post()
   @Header('Content-Type', 'application/json')
   registerTrait(@Body() body: object): string {
