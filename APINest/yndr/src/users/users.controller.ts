@@ -16,6 +16,11 @@ export class UsersController {
     return this.userService.getSingleUser(params.id);
   }
 
+  @Get(':id/traits')
+  getUserTraits(@Param() params: any): Promise<any> {
+    return this.userService.getUserTraits(params.id);
+  }
+
   @Post()
   @Header('Content-Type', 'application/json')
   registerUser(@Body() body: object): string {

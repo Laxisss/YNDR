@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 // import { AppModule } from 'src/app.module';
 import { Repository } from 'typeorm';
 import { Utilisateurs } from './users.entity';
+import { Traits } from '../traits/traits.entity';
 // import { databaseProviders } from '../database/database.providers';
 // import { AppDataSource } from '../index';
 
@@ -39,5 +40,10 @@ export class UsersService {
 
   async removeUser(id: string): Promise<void> {
     await this.usersRepository.delete(id);
+  }
+
+  getUserTraits(id: any): Promise<Traits> {
+
+    return await 
   }
 }
