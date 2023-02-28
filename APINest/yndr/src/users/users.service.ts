@@ -2,10 +2,11 @@
 import { Injectable } from '@nestjs/common';
 // import { Inject } from '@nestjs/common/decorators';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TraitsServices } from '../traits/traits.service';
 // import { AppModule } from 'src/app.module';
 import { Repository } from 'typeorm';
 import { Utilisateurs } from './users.entity';
-import { Traits } from '../traits/traits.entity';
+// import { Traits } from '../traits/traits.entity';
 // import { databaseProviders } from '../database/database.providers';
 // import { AppDataSource } from '../index';
 
@@ -15,11 +16,16 @@ export class UsersService {
   constructor(
     @InjectRepository(Utilisateurs)
     // @Inject('USER_REPOSITORY')
-    private usersRepository: Repository<Utilisateurs>
+    private usersRepository: Repository<Utilisateurs>,
+    private readonly traitsServices: TraitsServices
   ) {}
 
   getAllUsers(): Promise<Utilisateurs[]> {
-    return this.usersRepository.find();
+    return this.usersRepository.find({
+      relations: {
+        traits: true
+      }
+    });
   }
 
   getSingleUser(ID_Utilisateur: number): Promise<Utilisateurs> {
@@ -34,6 +40,7 @@ export class UsersService {
     user.MotDePasse = body.MotDePasse;
     user.DateCreation = new Date().toISOString().substring(0, 10);;
     user.DateNaissance = body.DateNaissance;
+    user.traits = []
     this.usersRepository.save(user);
     return `Utilisateur inséré :${user}`;
   }
@@ -42,8 +49,28 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 
-  getUserTraits(id: any): Promise<Traits> {
+  getUserTraits(ID_Utilisateur: any): Promise<Utilisateurs> {
 
-    return await 
+    return this.usersRepository.findOne({
+      select: {
+        ID_Utilisateur: true
+      },
+      where: {
+        ID_Utilisateur
+      },
+      relations: {
+        traits: true
+      }  
+    })
+  }
+
+  async addTraitToUser(ID_Utilisateur: number, ID_Trait: number): Promise<string> {
+    const trait = await this.traitsServices.getSingleTrait(ID_Trait);
+    console.log(trait);
+    const user = await this.getSingleUser(ID_Utilisateur)
+    console.log(user);
+    user.traits.push(trait);
+    this.usersRepository.save(user);
+    return "trait ajouté";
   }
 }

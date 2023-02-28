@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Utilisateurs } from 'src/users/users.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 
 @Entity()
 export class Traits {
@@ -8,4 +9,7 @@ export class Traits {
   
   @Column()
   Nom: string;
+
+  @ManyToMany(() => Utilisateurs, utilisateur => utilisateur.traits)
+  utilisateurs: Utilisateurs[]
 }
