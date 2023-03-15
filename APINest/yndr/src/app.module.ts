@@ -13,6 +13,8 @@ import { Traits } from './traits/traits.entity';
 import { TraitsController } from './traits/traits.controller';
 import { TraitsServices } from './traits/traits.service';
 import { TraitsModule } from './traits/traits.module';
+import { PossederModule } from './posseder/posseder.module';
+import { Posseder } from './posseder/posseder.entity';
 
 @Module({
   imports: [
@@ -23,12 +25,13 @@ import { TraitsModule } from './traits/traits.module';
       username: 'root',
       password: '',
       database: 'yndr',
-      entities: [Utilisateurs, Traits],
+      entities: [Utilisateurs, Traits, Posseder],
       synchronize: true,
       autoLoadEntities: true,
     }),
     UsersModule,
-    TraitsModule
+    TraitsModule,
+    PossederModule
   ],
   controllers: [AppController, UsersController, TraitsController],
   providers: [AppService, UsersService, TraitsServices],

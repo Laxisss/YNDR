@@ -22,5 +22,5 @@ export class Utilisateurs {
   DateCreation: string;
   
   @Column()
-  DateNaissance: string;
+  DateNaissance: string; 
 }
