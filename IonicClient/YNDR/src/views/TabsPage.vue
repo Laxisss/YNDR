@@ -32,7 +32,7 @@ export default defineComponent({
     components: {
       IonTabBar, IonTabButton, IonTabs, IonLabel, IonIcon, IonPage, IonRouterOutlet
     },
-    setup() {
+    data () {
       return {
         ellipse,
         square,
