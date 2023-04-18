@@ -6,13 +6,19 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="page" :fullscreen="true">
-      <div class="container carousel" ref="carousel">
-        <Swiper>
+      <!-- <div class="container carousel" ref="carousel">
+        <Swiper
+        :modules="modules"
+        :slides-per-view="1"
+        @swiper="onSwiper"
+        @slideChange="onSlideChange"
+        >
           <SwiperSlide v-for="(item, index) in userList" :key="index">
             <UserCard :user="item" />
           </SwiperSlide>
         </Swiper>
-      </div>
+      </div> -->
+      <TinderCarousel/>
     </ion-content>
   </ion-page>
 </template>
@@ -20,38 +26,32 @@
 <script>
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import UserCard from '@/components/UserCard.vue';
-import 'swiper/css';
-import 'swiper/css/autoplay';
-import 'swiper/css/keyboard';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-import 'swiper/css/zoom';
-import '@ionic/vue/css/ionic-swiper.css';
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Autoplay, Keyboard, Pagination, Scrollbar, Zoom } from 'swiper';
+// import UserCard from '@/components/UserCard.vue';
+import TinderCarousel from '@/components/TinderCarousel.vue'
+// import 'swiper/css';
+// import 'swiper/css/pagination';
+// import 'swiper/css/scrollbar';
+// import 'swiper/css/zoom';
+// import '@ionic/vue/css/ionic-swiper.css';
+// import { Swiper, SwiperSlide } from 'swiper/vue';
+// import { Pagination, Scrollbar, Zoom } from 'swiper';
 
 
 export default defineComponent({
   name: 'Tab2Page',
   components: {
-    IonPage, IonHeader, IonToolbar, IonTitle, IonContent, UserCard, Swiper, SwiperSlide
+    IonPage, IonHeader, IonToolbar, IonTitle, IonContent, TinderCarousel //UserCard,// Swiper, SwiperSlide
   },
   data () {
     return {
-      userList: []
+      userList: [],
+      //modules: [Pagination, Scrollbar, Zoom]
     }
   },
   methods: {
+
   },
-  mounted () {
-    fetch('http://localhost:3000/users/')
-    .then(res => res.json())
-    .then(data => {
-      console.log(data)
-      this.userList = data
-    })
-  }
+  
 })
 </script>
 
