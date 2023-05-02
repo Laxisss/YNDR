@@ -56,46 +56,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.card {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.card img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
-.card-content {
-  padding: 16px;
-  text-align: center;
-}
-
-.card-content h2 {
-  margin-bottom: 8px;
-  font-size: 24px;
-}
-
-.card-content p {
-  font-size: 16px;
-  color: #777;
+.page {
+  overflow-y: hidden;
 }
 </style>

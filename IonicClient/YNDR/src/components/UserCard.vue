@@ -24,7 +24,7 @@ export default defineComponent({
   }
   .card {
   width: 300px;
-  height: 400px;
+  height: 100%;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
