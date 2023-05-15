@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 // import { AppModule } from 'src/app.module';
 import { Repository } from 'typeorm';
 import { Utilisateurs } from './users.entity';
+import * as jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
 // import { databaseProviders } from '../database/database.providers';
 // import { AppDataSource } from '../index';
 
@@ -17,6 +19,38 @@ export class UsersService {
     private usersRepository: Repository<Utilisateurs>
   ) {}
 
+
+  async logMeIn(headers): Promise<string> {
+    const authHeader = headers.authorization;
+    const [type, credentials] = authHeader.split(' ');
+    console.log(headers.authorization)
+
+    if (type.toLowerCase() !== 'basic') {
+      throw new Error('Invalid Authorization Type');
+    }
+
+    const [username, password] = Buffer.from(credentials, 'base64')
+      .toString()
+      .split(':');
+    console.log(username, password)
+    const user = await this.usersRepository.findOneBy({ AdresseMail: username });
+    console.log(user)
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const isValidPassword = await bcrypt.compare(password, user.MotDePasse);
+
+    if (!isValidPassword) {
+      throw new Error('Invalid password');
+    }
+
+    const secret = 'YndrSecretKey';
+    const expiresIn = '1d';
+    const token = jwt.sign({ userId: user.ID_Utilisateur }, secret, { expiresIn });
+
+    return token;
+  }
+
   getAllUsers(): Promise<Utilisateurs[]> {
     return this.usersRepository.find();
   }
@@ -25,15 +59,20 @@ export class UsersService {
     return this.usersRepository.findOneBy({ ID_Utilisateur });
   }
 
-  registerUser(body: any): string {
+  async registerUser(body: any): Promise<string> {
     const user = new Utilisateurs();
     user.Nom = body.Nom;
     user.Prenom = body.Prenom;
     user.AdresseMail = body.AdresseMail;
-    user.MotDePasse = body.MotDePasse;
+    
+    // Hash password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(body.MotDePasse, saltRounds);
+    user.MotDePasse = hashedPassword;
+
     user.DateCreation = new Date().toISOString().substring(0, 10);;
     user.DateNaissance = body.DateNaissance;
-    this.usersRepository.save(user);
+    await this.usersRepository.save(user);
     return `Utilisateur inséré :${user}`;
   }
 

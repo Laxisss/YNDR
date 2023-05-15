@@ -23,10 +23,21 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+// import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+
+// Import Bootstrap and BootstrapVue CSS files (order is important)
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+
 const app = createApp(App)
-  .use(IonicVue)
-  .use(router);
-  
+.use(IonicVue)
+.use(router);
+// // Make BootstrapVue available throughout your project
+// app.use(BootstrapVue)
+// // Optionally install the BootstrapVue icon components plugin
+// app.use(IconsPlugin)
+
 router.isReady().then(() => {
   app.mount('#app');
 });

@@ -19,7 +19,12 @@ export default {
     }
   },
   mounted () {
-    fetch('http://localhost:3000/users/')
+    fetch('http://localhost:3000/users/', {
+      method: 'get',
+      headers: {
+        authorization: 'Bearer '+ localStorage.getItem('YNDR-Token')
+      }
+    })
     .then(res => res.json())
     .then(data => {
       console.log(data)

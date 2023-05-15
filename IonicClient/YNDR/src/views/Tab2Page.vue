@@ -41,17 +41,7 @@ export default defineComponent({
   name: 'Tab2Page',
   components: {
     IonPage, IonHeader, IonToolbar, IonTitle, IonContent, TinderCarousel //UserCard,// Swiper, SwiperSlide
-  },
-  data () {
-    return {
-      userList: [],
-      //modules: [Pagination, Scrollbar, Zoom]
-    }
-  },
-  methods: {
-
-  },
-  
+  }
 })
 </script>
 

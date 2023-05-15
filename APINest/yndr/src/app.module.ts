@@ -16,6 +16,9 @@ import { TraitsModule } from './traits/traits.module';
 import { PossederModule } from './posseder/posseder.module';
 import { Posseder } from './posseder/posseder.entity';
 
+// import { APP_GUARD } from '@nestjs/core';
+// import { JwtAuthGuard } from './jwt-auth.guard';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -34,6 +37,6 @@ import { Posseder } from './posseder/posseder.entity';
     PossederModule
   ],
   controllers: [AppController, UsersController, TraitsController],
-  providers: [AppService, UsersService, TraitsServices],
+  providers: [AppService, UsersService, TraitsServices]
 })
 export class AppModule {}
