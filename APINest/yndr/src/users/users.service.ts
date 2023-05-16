@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 // import { Inject } from '@nestjs/common/decorators';
 import { InjectRepository } from '@nestjs/typeorm';
 // import { AppModule } from 'src/app.module';
-import { Repository } from 'typeorm';
+import { Repository, Not } from 'typeorm';
 import { Utilisateurs } from './users.entity';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
@@ -26,7 +26,7 @@ export class UsersService {
     console.log(headers.authorization)
 
     if (type.toLowerCase() !== 'basic') {
-      throw new Error('Invalid Authorization Type');
+      return "Vos identifiants n'ont pas pu être envoyés"
     }
 
     const [username, password] = Buffer.from(credentials, 'base64')
@@ -36,12 +36,12 @@ export class UsersService {
     const user = await this.usersRepository.findOneBy({ AdresseMail: username });
     console.log(user)
     if (!user) {
-      throw new Error('User not found');
+      return "Ce compte n'existe pas"
     }
     const isValidPassword = await bcrypt.compare(password, user.MotDePasse);
 
     if (!isValidPassword) {
-      throw new Error('Invalid password');
+      return 'Mot de passe Invalide'
     }
 
     const secret = 'YndrSecretKey';
@@ -51,8 +51,12 @@ export class UsersService {
     return token;
   }
 
-  getAllUsers(): Promise<Utilisateurs[]> {
-    return this.usersRepository.find();
+  getAllUsers(me: number): Promise<Utilisateurs[]> {
+    return this.usersRepository.find({
+      where: {
+        ID_Utilisateur: Not(me)
+      }
+    });
   }
 
   getSingleUser(ID_Utilisateur: number): Promise<Utilisateurs> {

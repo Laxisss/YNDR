@@ -7,23 +7,23 @@ export class PossederController {
   constructor(private readonly possederService: PossederService) {}
 
   @Get()
-  getAllUsers(): Promise<any> {
+  getAlllinks(): Promise<any> {
     return this.possederService.getAllLinks();
   }
 
   @Get(':id')
-  getSingleUser(@Param() params: any): Promise<any> {
+  getSingleLink(@Param() params: any): Promise<any> {
     return this.possederService.getLinkOfUser(params.id);
   }
 
   @Post()
   @Header('Content-Type', 'application/json')
-  registerUser(@Body() body: object): string {
+  registerLink(@Body() body: object): string {
     return this.possederService.addLink(body);
   }
 
   @Delete(':id')
-  deleteUser(@Param() params: any): Promise<any> {
+  deleteLink(@Param() params: any): Promise<any> {
     return this.possederService.removeLink(params.id, params.ID_Trait);
   }
 }

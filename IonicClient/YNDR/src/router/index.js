@@ -7,6 +7,10 @@ const routes = [
     redirect: '/tabs/tab1'
   },
   {
+    path: '/login',
+    component: () => import('@/views/LoginPage.vue')
+  },
+  {
     path: '/tabs/',
     component: TabsPage,
     children: [
@@ -33,6 +37,20 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from) => {
+  console.log(to, from)
+  if(to.path != '/login') {
+    const token = localStorage.getItem('YNDR-Token');
+    if(token) {
+      // verify token
+      return true
+    }
+    else {
+      return "/login"
+    }
+  }
 })
 
 export default router

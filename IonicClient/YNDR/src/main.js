@@ -29,10 +29,14 @@ import './theme/variables.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+// import VueSweetalert2 from 'vue-sweetalert2';
+// import 'sweetalert2/dist/sweetalert2.min.css';
+
 
 const app = createApp(App)
 .use(IonicVue)
-.use(router);
+.use(router)
+// .use(VueSweetalert2);
 // // Make BootstrapVue available throughout your project
 // app.use(BootstrapVue)
 // // Optionally install the BootstrapVue icon components plugin

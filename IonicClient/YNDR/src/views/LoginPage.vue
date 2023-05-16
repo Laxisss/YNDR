@@ -37,7 +37,7 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Tab1Page',
+  name: 'LoginPage',
   components: {
     IonPage, IonHeader, IonToolbar, IonTitle, IonContent
   },
@@ -61,6 +61,7 @@ export default defineComponent({
       .then(data => {
         if(data.length > 100) {
           localStorage.setItem('YNDR-Token', data)
+          this.$router.push('/tabs/tabs2')
         }
         else {
           alert(data)

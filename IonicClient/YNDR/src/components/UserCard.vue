@@ -1,7 +1,18 @@
 <template>
   <div class="card">
-    <img :src="user.image" alt="Image" />
-    <h3>{{ user.Nom }}</h3>
+    <!-- {{ traits }}
+    {{ myTraits }} -->
+    <img :src="user.image || randomImage()" alt="Image" />
+    <div class="info">
+      <h3>{{ user.Nom }}</h3>
+      <p>{{ user.Prenom }}</p>
+      <span v-for="(monTrait, index) in myTraits" style="overflow-y: scroll;" :key="index">
+        <span v-if="index > 0">, </span>
+        <span v-if="traits.find(leTrait => leTrait.ID_Trait == monTrait)?.Nom">
+          {{ traits.find(leTrait => leTrait.ID_Trait == monTrait).Nom }}
+        </span>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -12,6 +23,44 @@ export default defineComponent({
   name: 'UserCard',
   props: {
     user: Object
+  },
+  data () {
+    return {
+      traits: [],
+      myTraits: []
+    }
+  },
+  methods: {
+    randomImage () {
+      const rand = Math.floor(Math.random() * 5);
+      const imgName = `profile-${rand}.png`;
+      const img = require(`@/assets/avatars/${imgName}`);
+      return img;
+    }
+  },
+  mounted () {
+    const id = this.user.ID_Utilisateur;
+    fetch('http://localhost:3000/traits', {
+      method: 'get',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('YNDR-Token')}`
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      this.traits = data
+    })
+
+    fetch('http://localhost:3000/link/'+id, {
+      method: 'get',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('YNDR-Token')}`
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      this.myTraits = data.map(elem => elem.ID_Trait)
+    })
   }
 })
 </script>
@@ -33,14 +82,15 @@ export default defineComponent({
   flex-direction: column;
 }
 
+.card .info {
+  margin: 16px;
+  /* font-size: 24px; */
+}
+
 .card img {
   width: 100%;
   height: 60%;
   object-fit: cover;
 }
 
-.card h3 {
-  margin: 16px;
-  font-size: 24px;
-}
 </style>

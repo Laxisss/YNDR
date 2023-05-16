@@ -2,7 +2,17 @@
   <swiper :class="!active ? 'idle' : ''" ref="swiperRef" :options="swiperOptions" @slideChange="onSlideChange" @init="onSwiperInit">
     <swiper-slide :class="!active ? 'idle' : ''">Left</swiper-slide>
     <swiper-slide>
+      <span class="dislike-container">
+        <span class="html-entity">
+          &times;
+        </span>
+      </span>
       <UserCard :user="user"/>
+      <span class="like-container">
+        <span class="html-entity">
+          &hearts;
+        </span>
+      </span>
     </swiper-slide>
     <swiper-slide :class="!active ? 'idle' : ''">right</swiper-slide>
   </swiper>
@@ -12,6 +22,7 @@
 import { Swiper, SwiperSlide } from "swiper/vue";
 import UserCard from "@/components/UserCard.vue";
 import "swiper/swiper-bundle.min.css";
+import Swal from 'sweetalert2'
 
 export default {
   name: 'userCarousel',
@@ -62,14 +73,46 @@ export default {
       }
     },
     onSwipeLeft() {
-      console.log("Swipe vers la gauche");
-      // swiper.slideNext();
-      // swiper.slideNext();
+      console.log("Swipe vers la droite");
+      if(this.active) {
+        fetch('http://localhost:3000/likes',{
+          method: 'post',
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('YNDR-Token')}`
+          },
+          body: {
+            ID_Utilisateur: this.user.ID_Utilisateur
+          }
+        })
+        .then(res => res.text())
+        .then(data => {
+          console.log(data)
+          fetch('http://localhost:3000/likes/' + this.user.ID_Utilisateur, {
+            method: 'get',
+            headers: {
+              authorization: `Bearer ${localStorage.getItem('YNDR-Token')}`
+            }
+          })
+          .then(res => res.json())
+          .then(data => {
+            if(data.find(like => like.ID_Utilisateur_Scrolle)) {
+              console.log('me')
+            }
+          })
+        })
+      }
       this.active = false
       // Ajoutez votre code ici pour gérer le swipe vers la gauche
     },
     onSwipeRight() {
-      console.log("Swipe vers la droite");
+      console.log("Swipe vers la gauche");
+      if(this.active) {
+        Swal.fire({
+          title: 'Salut',
+          icon: 'success',
+          backdrop: false
+        })
+      }
       this.active = false
       // Ajoutez votre code ici pour gérer le swipe vers la droite
     },
@@ -94,6 +137,34 @@ export default {
     display: none;
   }
 } */
+
+.html-entity {
+  filter: invert(1);
+}
+
+.dislike-container {
+  border-radius: 50%;
+  background-color: red;
+  aspect-ratio: 1 / 1;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: xx-large;
+  margin-right: 1rem;
+}
+.like-container {
+  border-radius: 50%;
+  background-color: rgb(71, 212, 71);
+  aspect-ratio: 1 / 1;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: xx-large;
+  margin-left: 1rem;
+}
+
 .swiper {
   width: 100%;
   height: 100%;

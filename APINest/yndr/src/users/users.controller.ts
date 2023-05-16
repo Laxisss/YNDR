@@ -15,7 +15,6 @@ class JwtAuthGuard implements CanActivate {
     if (!authHeader) {
       return false;
     }
-
     const [type, token] = authHeader.split(' ');
 
     if (type.toLowerCase() !== 'bearer' || !token) {
@@ -40,8 +39,9 @@ export class UsersController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  getAllUsers(): Promise<any> {
-    return this.userService.getAllUsers();
+  getAllUsers(@Headers() headers): Promise<any> {
+    const id = jwt.verify(headers.authorization.split(' ')[1], 'YndrSecretKey').userId
+    return this.userService.getAllUsers(id);
   }
 
   @Get('connect')

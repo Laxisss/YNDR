@@ -16,6 +16,11 @@ import { TraitsModule } from './traits/traits.module';
 import { PossederModule } from './posseder/posseder.module';
 import { Posseder } from './posseder/posseder.entity';
 
+import { Scroller } from './scroller/scroller.entity';
+import { ScrollerModule } from './scroller/scroller.module';
+import { ScrollerController } from './scroller/scroller.controller';
+import { ScrollerService } from './scroller/scroller.service';
+
 // import { APP_GUARD } from '@nestjs/core';
 // import { JwtAuthGuard } from './jwt-auth.guard';
 
@@ -28,15 +33,16 @@ import { Posseder } from './posseder/posseder.entity';
       username: 'root',
       password: '',
       database: 'yndr',
-      entities: [Utilisateurs, Traits, Posseder],
+      entities: [Utilisateurs, Traits, Posseder, Scroller],
       synchronize: true,
       autoLoadEntities: true,
     }),
     UsersModule,
     TraitsModule,
-    PossederModule
+    PossederModule,
+    ScrollerModule
   ],
-  controllers: [AppController, UsersController, TraitsController],
-  providers: [AppService, UsersService, TraitsServices]
+  controllers: [AppController, UsersController, TraitsController, ScrollerController],
+  providers: [AppService, UsersService, TraitsServices, ScrollerService]
 })
 export class AppModule {}
