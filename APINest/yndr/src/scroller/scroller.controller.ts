@@ -12,11 +12,19 @@ export class ScrollerController {
     return this.scrollerService.getAllLikes();
   }
 
-  // @Get(':id/me')
-  // getAmILiked(@Param() params: any): Promise<any> {
-  //   // return this.scrollerService.getLikesOfUser(params.id);
-  //   //check if am liked
-  // }
+  @Get('me')
+  getMyLikes(@Param() params: any, @Headers() headers: any): Promise<any> {
+    const id = jwt.verify(headers.authorization.split(' ')[1], 'YndrSecretKey').userId
+    return this.scrollerService.getAmILiked(params.id, id);
+    //check if am liked
+  }
+
+  @Get(':id/me')
+  getAmILiked(@Param() params: any, @Headers() headers: any): Promise<any> {
+    const id = jwt.verify(headers.authorization.split(' ')[1], 'YndrSecretKey').userId
+    return this.scrollerService.getAmILiked(params.id, id);
+    //check if am liked
+  }
 
   @Get(':id')
   getLikesOfUser(@Param() params: any): Promise<any> {

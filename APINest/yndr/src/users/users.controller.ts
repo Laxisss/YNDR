@@ -44,6 +44,13 @@ export class UsersController {
     return this.userService.getAllUsers(id);
   }
 
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  getMyInfo(@Headers() headers: any): Promise<any> {
+    const id = jwt.verify(headers.authorization.split(' ')[1], 'YndrSecretKey').userId
+    return this.userService.getSingleUser(id)
+  }
+
   @Get('connect')
   logUserIn(@Headers() headers): Promise<any> {
     return this.userService.logMeIn(headers);

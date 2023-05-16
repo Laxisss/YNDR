@@ -11,23 +11,7 @@
           <ion-title size="large">Ynov Campus</ion-title>
         </ion-toolbar>
       </ion-header>
-      <div class="container">
-        <form @submit.prevent="login">
-          <h2 class="mb-3">Se connecter</h2>
-          <div class="input">
-            <label for="email">Addresse E-mail YNOV</label>
-            <input class="form-control" type="text" name="email" placeholder="prenom.nom@ynov.com" />
-          </div>
-          <div class="input">
-            <label for="password">Mot de passe</label>
-            <input class="form-control" type="password" name="password" placeholder="**********" />
-          </div>
-          <button type="submit" class="mt-4 btn-pers" id="login_button">
-            Se connecter
-          </button>
-          <!-- <div class="alert alert-warning alert-dismissible fade show mt-5 d-none -->
-        </form>
-      </div>
+      
     </ion-content>
   </ion-page>
 </template>
@@ -43,33 +27,14 @@ export default defineComponent({
   },
   data() {
     return {
-      email: "",
-      password: "",
     };
   },
   methods: {
-    login(submitEvent) {
-      this.email = submitEvent.target.elements.email.value;
-      this.password = submitEvent.target.elements.password.value;
-      fetch("http://localhost:3000/users/connect", {
-        method: 'get',
-        headers: {
-          authorization: 'Basic '+btoa(this.email+":"+this.password)
-        }
-      })
-      .then(res => res.text())
-      .then(data => {
-        if(data.length > 100) {
-          localStorage.setItem('YNDR-Token', data)
-        }
-        else {
-          alert(data)
-        }
-        console.log(data)
-      })
-
-    }
+    
   },
+  mounted () {
+    
+  }
 });
 </script>
 

@@ -22,6 +22,13 @@ export class ScrollerService {
     }})
   }
 
+  getAmILiked(ID_Utilisateur_scrolleur: number, me: number): Promise<Scroller[]> {
+    return this.ScrollerRepository.find({where: {
+      ID_Utilisateur_scrolleur,
+      ID_Utilisateur_scrolle: me
+    }})
+  }
+
   // getUsersOfLink(ID_Trait: number): Promise<Scroller[]> {
   //   return this.ScrollerRepository.find({where: {
   //     ID_Trait

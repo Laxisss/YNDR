@@ -1,5 +1,6 @@
 <template>
-  <swiper :class="!active ? 'idle' : ''" ref="swiperRef" :options="swiperOptions" @slideChange="onSlideChange" @init="onSwiperInit">
+  <swiper :class="!active ? 'idle' : ''" ref="swiperRef" :options="swiperOptions" @slideChange="onSlideChange"
+    @init="onSwiperInit">
     <swiper-slide :class="!active ? 'idle' : ''">Left</swiper-slide>
     <swiper-slide>
       <span class="dislike-container">
@@ -7,7 +8,7 @@
           &times;
         </span>
       </span>
-      <UserCard :user="user"/>
+      <UserCard :user="user" />
       <span class="like-container">
         <span class="html-entity">
           &hearts;
@@ -74,8 +75,8 @@ export default {
     },
     onSwipeLeft() {
       console.log("Swipe vers la droite");
-      if(this.active) {
-        fetch('http://localhost:3000/likes',{
+      if (this.active) {
+        fetch('http://localhost:3000/likes', {
           method: 'post',
           headers: {
             authorization: `Bearer ${localStorage.getItem('YNDR-Token')}`
@@ -84,35 +85,38 @@ export default {
             ID_Utilisateur: this.user.ID_Utilisateur
           }
         })
-        .then(res => res.text())
-        .then(data => {
-          console.log(data)
-          fetch('http://localhost:3000/likes/' + this.user.ID_Utilisateur, {
-            method: 'get',
-            headers: {
-              authorization: `Bearer ${localStorage.getItem('YNDR-Token')}`
-            }
-          })
-          .then(res => res.json())
+          .then(res => res.text())
           .then(data => {
-            if(data.find(like => like.ID_Utilisateur_Scrolle)) {
-              console.log('me')
-            }
+            console.log(data)
+
+            fetch('http://localhost:3000/likes/' + this.user.ID_Utilisateur + "/me", {
+              method: 'get',
+              headers: {
+                authorization: `Bearer ${localStorage.getItem('YNDR-Token')}`
+              }
+            })
+              .then(res => res.json())
+              .then(data => {
+                if (data.length > 0) {
+                  console.log('me')
+                  Swal.fire({
+                    title: "It's a match !",
+                    text: "Vous et "+ this.user.Prenom +" "+ this.user.Nom +" vous êtes likés mutuellement",
+                    icon: 'success',
+                    backdrop: false
+                  })
+                }
+              })
           })
-        })
       }
       this.active = false
       // Ajoutez votre code ici pour gérer le swipe vers la gauche
     },
     onSwipeRight() {
       console.log("Swipe vers la gauche");
-      if(this.active) {
-        Swal.fire({
-          title: 'Salut',
-          icon: 'success',
-          backdrop: false
-        })
-      }
+      // if(this.active) {
+
+      // }
       this.active = false
       // Ajoutez votre code ici pour gérer le swipe vers la droite
     },
@@ -125,6 +129,7 @@ export default {
   display: none;
   /* animation: 1s disappear; */
 }
+
 /* @keyframes disappear {
   0% {
     transform: scale(1);
@@ -153,6 +158,7 @@ export default {
   font-size: xx-large;
   margin-right: 1rem;
 }
+
 .like-container {
   border-radius: 50%;
   background-color: rgb(71, 212, 71);
@@ -196,5 +202,4 @@ export default {
 .card h3 {
   margin: 16px;
   font-size: 24px;
-}
-</style>
+}</style>

@@ -61,7 +61,7 @@ export default defineComponent({
       .then(data => {
         if(data.length > 100) {
           localStorage.setItem('YNDR-Token', data)
-          this.$router.push('/tabs/tabs2')
+          this.$router.push('/tabs/tab2')
         }
         else {
           alert(data)
