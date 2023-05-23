@@ -98,7 +98,6 @@ export default {
               .then(res => res.json())
               .then(data => {
                 if (data.length > 0) {
-                  console.log('me')
                   Swal.fire({
                     title: "It's a match !",
                     text: "Vous et "+ this.user.Prenom +" "+ this.user.Nom +" vous êtes likés mutuellement",
